@@ -15,4 +15,14 @@ async def root():
 
 @app.post("/api/infer")
 async def infer(item: Item):
-    return {"result": f"{item.line}, that is."}
+    return {"result": infer_model(item.line)}
+
+
+def load_model():
+    # TODO: load the model
+    pass
+
+
+def infer_model(line: str):
+    # TODO: infer the `line` against the model
+    return f"the infer result is => {line}"
