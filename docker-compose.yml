@@ -68,6 +68,14 @@ services:
     depends_on:
       - elasticsearch
 
+  server:
+    build:
+      context: http-server/
+    ports:
+      - "8000:8000"
+    networks:
+      - elk
+
 networks:
   elk:
     driver: bridge
