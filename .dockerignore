@@ -1,0 +1,7 @@
+.git/
+.gitignore
+.vscode
+
+http-server/__pycache__
+http-server/app/__pycache__
+http-server/env

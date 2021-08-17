@@ -1,28 +1,45 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from data.predictions_handler import get_prediction
 
+
+# initiate API
 app = FastAPI()
 
 
-class Item(BaseModel):
+class ModelParam(BaseModel):
+    """
+    Defines model for POST request.
+    """
+
     line: str
 
 
 @app.get("/")
 async def root():
-    return {"hello": "for every soul out there."}
+    return {"hello": "for every single soul out there."}
 
 
-@app.post("/api/infer")
-async def infer(item: Item):
-    return {"result": infer_model(item.line)}
+@app.post("/api/predict")
+async def predict():
+    # prepare the input, just dummy for now
+    data = {
+        "variance_of_wavelet": 0.5,
+        "skewness_of_wavelet": 0.5,
+        "curtosis_of_wavelet": 0.5,
+        "entropy_of_wavelet": 0.5,
+    }
 
+    # make predictions based on the incoming data and
+    # neural network
+    preds = get_prediction(data)
 
-def load_model():
-    # TODO: load the model
-    pass
+    # return the predicted class and the probability
+    return {
+        "predicted_class": round(float(preds.flatten())),
+        "predicted_probability": float(preds.flatten()),
+    }
 
-
-def infer_model(line: str):
-    # TODO: infer the `line` against the model
-    return f"the infer result is => {line}"
+@app.get("/api/model/load")
+async def load_model(path: str):
+    load_model("data")
