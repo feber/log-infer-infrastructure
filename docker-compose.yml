@@ -75,6 +75,7 @@ services:
       - "8000:8000"
     networks:
       - elk
+    runtime: nvidia
 
 networks:
   elk:

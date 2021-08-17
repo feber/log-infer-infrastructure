@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.0.3-cudnn8-runtime-ubuntu20.04
+FROM tensorflow/tensorflow:2.6.0-gpu
 
 RUN apt update && apt install -y python3-dev python3-pip
 
