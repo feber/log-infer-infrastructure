@@ -39,6 +39,10 @@ services:
         source: ./logstash/pipeline
         target: /usr/share/logstash/pipeline
         read_only: true
+      - type: bind
+        source: ./logs
+        target: /cowrie-logs
+        read_only: true
     ports:
       - "5044:5044"
       - "5000:5000/tcp"
