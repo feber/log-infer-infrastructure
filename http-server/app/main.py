@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from data.predictions_handler import get_prediction
-import random
+from .model import get_prediction
 
 
 # initiate API
@@ -22,18 +21,10 @@ async def root():
 
 
 @app.post("/api/predict")
-async def predict():
-    # prepare the input, just dummy for now
-    data = {
-        "variance_of_wavelet": random.uniform(0, 1),
-        "skewness_of_wavelet": random.uniform(0, 1),
-        "curtosis_of_wavelet": random.uniform(0, 1),
-        "entropy_of_wavelet": random.uniform(0, 1),
-    }
-
+async def predict(item: ModelParam):
     # make predictions based on the incoming data and
     # neural network
-    preds = get_prediction(data)
+    preds = get_prediction(item.line)
 
     # return the predicted class and the probability
     return {
