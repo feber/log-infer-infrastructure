@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from .model import get_prediction
+from pandas.core.common import flatten
+from data.model import get_prediction
 
 
 # initiate API
@@ -26,10 +27,9 @@ async def predict(item: ModelParam):
     # neural network
     preds = get_prediction(item.line)
 
-    # return the predicted class and the probability
-    return {
-        "result": preds,
-    }
+    # return the generated text as an array
+    # and flatten it to avoid nested array
+    return flatten([preds])
 
 
 @app.get("/api/model/load")
