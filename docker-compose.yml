@@ -77,6 +77,10 @@ services:
       context: http-server/
     ports:
       - "8000:8000"
+    volumes:
+      - type: bind
+        source: ./model
+        target: /model
     networks:
       - elk
     runtime: nvidia
