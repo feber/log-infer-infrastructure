@@ -1,13 +1,30 @@
-FROM tensorflow/tensorflow:2.6.0-gpu
+# FROM pytorch/pytorch:1.9.0-cuda11.1-cudnn8-runtime
+
+# RUN apt update && apt install -y python3-dev python3-pip
+
+# COPY ./app /app
+# COPY ./requirements.txt /app/requirements.txt
+
+# WORKDIR /app
+# RUN python3 -m pip install -r requirements.txt
+
+# EXPOSE 8000
+
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+FROM pytorch/pytorch:1.9.0-cuda11.1-cudnn8-runtime
 
 RUN apt update && apt install -y python3-dev python3-pip
 
-COPY ./app /app
+# copy and install the requirements before Python code
+# to avoid reinstalling dependencies everytime the code changes
+RUN mkdir /app
 COPY ./requirements.txt /app/requirements.txt
+RUN python3 -m pip install -r /app/requirements.txt
+
+COPY ./app /app
+EXPOSE 8000
 
 WORKDIR /app
-RUN python3 -m pip install -r requirements.txt
-
-EXPOSE 8000
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

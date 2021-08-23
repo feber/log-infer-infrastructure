@@ -1,19 +1,33 @@
-import tensorflow as tf
-import pandas as pd
+from transformers import GPT2LMHeadModel, GPT2Config, GPT2Tokenizer
+from transformers import set_seed
 import joblib
+import pandas as pd
+import torch
 
-# load saved standardising object
-scaler = joblib.load("data/scaler.joblib")
+# set specific seed for a reproducible behaviour
+set_seed(42)
 
-# load saved keras model
-model = tf.keras.models.load_model("data/banknote_authentication_model.h5")
+max_length = 242
+
+# run on GPU with CPU as fallback
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# load a trained model and vocabulary that have been fine-tuned
+configuration = GPT2Config.from_json_file("/model/config.json")
+tokenizer = GPT2Tokenizer.from_pretrained("/model")
+model = GPT2LMHeadModel.from_pretrained("/model", config=configuration)
+model = model.to(device)
+model.eval()
 
 
 def load_model(path: str):
-    global scaler, model
+    global configuration, tokenizer, model
 
-    scaler = joblib.load(f"{path}/scaler.joblib")
-    model = tf.keras.models.load_model(f"{path}/banknote_authentication_model.h5")
+    configuration = GPT2Config.from_json_file("/model/config.json")
+    tokenizer = GPT2Tokenizer.from_pretrained("/model")
+    model = GPT2LMHeadModel.from_pretrained("/model", config=configuration)
+    model = model.to(device)
+    model.eval()
 
 
 def get_prediction(data: dict):
@@ -25,22 +39,23 @@ def get_prediction(data: dict):
     :return: Dict with keys 'predicted_class' (class predicted) and 'predicted_prob' (probability of prediction)
     """
 
-    # convert new data dict as a DataFrame and reshape the columns to suit the model
-    new_data = {k: [v] for k, v in data.items()}
-    new_data_df = pd.DataFrame.from_dict(new_data)
-    new_data_df = new_data_df[
-        [
-            "variance_of_wavelet",
-            "skewness_of_wavelet",
-            "curtosis_of_wavelet",
-            "entropy_of_wavelet",
-        ]
-    ]
+    # TODO: what is text, what is question?
+    # prompt = f"{text}, {ques}:"
+    prompt = "CMD:, cd:"
 
-    # scale new data using the loaded object
-    x = scaler.transform(new_data_df.values)
+    # TODO: document the code below
+    generated = torch.tensor(tokenizer.encode(prompt)).unsqueeze(0)
+    input_len = len(generated[0])
+    generated = generated.to(device)
 
-    # make new predictions frm the newly scaled data
-    preds = model.predict(x)
+    prediction = model.generate(
+        generated,
+        do_sample=True,
+        top_k=50,
+        max_length=max_length,
+        top_p=0.95,
+        num_return_sequences=1,
+    )
 
-    return preds
+    # TODO: document the code below
+    return tokenizer.decode(prediction[0][input_len:], skip_special_tokens=True)

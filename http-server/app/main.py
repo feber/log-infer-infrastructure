@@ -37,8 +37,7 @@ async def predict():
 
     # return the predicted class and the probability
     return {
-        "predicted_class": round(float(preds.flatten())),
-        "predicted_probability": float(preds.flatten()),
+        "result": preds,
     }
 
 
