@@ -7,4 +7,5 @@ http-server/app/__pycache__
 http-server/env
 
 logs
+model
 scripts

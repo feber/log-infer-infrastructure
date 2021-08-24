@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.6.0-gpu
+FROM pytorch/pytorch:1.9.0-cuda11.1-cudnn8-runtime
 
 RUN apt update && apt install -y python3-dev python3-pip
 
