@@ -12,24 +12,14 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"this program runs on {device}")
 
 # load a trained model and vocabulary that have been fine-tuned
-configuration = GPT2Config.from_json_file("../model/config.json")
-tokenizer = GPT2Tokenizer.from_pretrained("../model")
-model = GPT2LMHeadModel.from_pretrained("../model", config=configuration)
+configuration: GPT2Config = GPT2Config.from_json_file("../../model/config.json")
+tokenizer: GPT2Tokenizer = GPT2Tokenizer.from_pretrained("../../model")
+model: GPT2LMHeadModel = GPT2LMHeadModel.from_pretrained("../../model", config=configuration)
 model = model.to(device)
 model.eval()
 
 
-def load_model(path: str):
-    global configuration, tokenizer, model
-
-    configuration = GPT2Config.from_json_file("../model/config.json")
-    tokenizer = GPT2Tokenizer.from_pretrained("../model")
-    model = GPT2LMHeadModel.from_pretrained("../model", config=configuration)
-    model = model.to(device)
-    model.eval()
-
-
-def get_prediction(line: str):
+def get_prediction(line: str) -> str:
     """
     Returns a predicted string based on a given string.
     """
