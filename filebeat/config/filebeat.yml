@@ -23,6 +23,10 @@ output.logstash:
   # The Logstash hosts
   hosts: ["localhost:5044"]
 
+# Max number of harvesters that are started in parallel.
+# Default is 0 which means unlimited
+harvester_limit: 1
+
 # Registry data path. If a relative path is used, it is considered relative to the
 # data path.
 #filebeat.registry.path: ${path.data}/registry
