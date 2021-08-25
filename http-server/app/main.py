@@ -1,9 +1,11 @@
 import os
 
-os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
+os.environ["CUDA_LAUNCH_BLOCKING"] = "0"
 from fastapi import FastAPI
+from pandas.core.common import flatten
 from pydantic import BaseModel
 from data.model import get_prediction
+from typing import List
 
 # initiate API
 app = FastAPI()
@@ -23,7 +25,7 @@ async def root():
 
 
 @app.post("/api/predict")
-async def predict(item: ModelParam):
+async def predict(item: ModelParam, response_model=List[str]):
     preds = []
 
     try:
@@ -34,8 +36,5 @@ async def predict(item: ModelParam):
         # explicitly return the error message to make it clear in Elasticsearch
         preds = ["<error>"]
 
-    # return the generated text as an array
-    # and flatten it to avoid nested array
+    # return the generated text
     return preds
-
-# TODO: unzip the model, test to call, look at the time, then run the filebeat

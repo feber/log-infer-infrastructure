@@ -28,7 +28,7 @@ def get_prediction(line: str) -> str:
     prompt = f"{line}, {question}:"
 
     # TODO: document the code below
-    generated = torch.tensor(tokenizer.encode(prompt)).unsqueeze(0)
+    generated = torch.as_tensor(tokenizer.encode(prompt)).unsqueeze(0)
     input_len = len(generated[0])
     generated = generated.to(device)
 
