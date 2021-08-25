@@ -27,6 +27,11 @@ output.logstash:
 # Default is 0 which means unlimited
 harvester_limit: 1
 
+# Drop unnecessary fields
+processors:
+  - drop_fields:
+      fields: ["agent", "log", "input", "ecs"]
+
 # Registry data path. If a relative path is used, it is considered relative to the
 # data path.
 #filebeat.registry.path: ${path.data}/registry
