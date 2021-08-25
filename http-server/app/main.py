@@ -1,6 +1,8 @@
+import os
+
+os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
 from fastapi import FastAPI
 from pydantic import BaseModel
-from pandas.core.common import flatten
 from data.model import get_prediction
 
 # initiate API
@@ -22,10 +24,18 @@ async def root():
 
 @app.post("/api/predict")
 async def predict(item: ModelParam):
-    # make predictions based on the incoming data and
-    # neural network
-    preds = get_prediction(item.line)
+    preds = []
+
+    try:
+        # make predictions based on the incoming data and neural network
+        # then split by comma and strip the spaces at the beginning and the end
+        preds = [command.strip() for command in get_prediction(item.line).split(",")]
+    except:
+        # explicitly return the error message to make it clear in Elasticsearch
+        preds = ["<error>"]
 
     # return the generated text as an array
     # and flatten it to avoid nested array
-    return flatten([preds])
+    return preds
+
+# TODO: unzip the model, test to call, look at the time, then run the filebeat

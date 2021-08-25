@@ -24,8 +24,7 @@ def get_prediction(line: str) -> str:
     Returns a predicted string based on a given string.
     """
 
-    # for now, question is always `Utility`
-    question = "Utility"
+    question = "What are the Utilities used in given input message?"
     prompt = f"{line}, {question}:"
 
     # TODO: document the code below
