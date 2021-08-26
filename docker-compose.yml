@@ -84,6 +84,11 @@ services:
     networks:
       - elk
     runtime: nvidia
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
 
 networks:
   elk:
