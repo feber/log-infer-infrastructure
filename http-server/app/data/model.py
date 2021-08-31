@@ -1,3 +1,4 @@
+from datetime import datetime
 from transformers import GPT2LMHeadModel, GPT2Config, GPT2Tokenizer
 from transformers import set_seed
 from typing import Union
@@ -22,13 +23,15 @@ model = model.to(device)
 model.eval()
 
 
-def get_prediction(line: str) -> Union[str, float]:
+def get_prediction(line: str) -> Union[str, float, float]:
     """
     Returns a predicted string based on a given string.
     """
 
     question = "Used Utilities"
     prompt = f"{line}, {question}:"
+
+    start_time = datetime.now()
 
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids
     input_ids = input_ids.to(device)
@@ -73,4 +76,8 @@ def get_prediction(line: str) -> Union[str, float]:
     tok = gen_sequences[tp[0], :, None].squeeze(-1)
     pred = tokenizer.decode(tok, skip_special_tokens=True)
 
-    return pred, prob
+    # record the elapsed time in ms
+    elapsed = datetime.now() - start_time
+    elapsed_ms = elapsed.total_seconds() * 1000
+
+    return pred, prob, elapsed_ms

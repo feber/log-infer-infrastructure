@@ -27,11 +27,12 @@ async def root():
 async def predict(item: ModelParam):
     utilities = []
     score = 0.0
+    elapsed_ms = 0
 
     try:
         # make predictions based on the incoming data and neural network
         # then split by comma and strip the spaces at the beginning and the end
-        utilities, score = get_prediction(item.line)
+        utilities, score, elapsed_ms = get_prediction(item.line)
 
         # split utilities to array and trim wrapping whitespaces
         utilities = [utility.strip() for utility in utilities.strip().split(" ")]
@@ -40,4 +41,4 @@ async def predict(item: ModelParam):
         utilities = ["<error>"]
 
     # return the generated text and score
-    return {"utilities": utilities, "score": score}
+    return {"utilities": utilities, "score": score, "latency_ms": elapsed_ms}
