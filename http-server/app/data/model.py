@@ -24,10 +24,14 @@ model.eval()
 
 
 def get_prediction(line: str) -> Union[str, float, float]:
-    """
-    Returns a predicted string based on a given string.
-    """
+    """Returns a predicted string based on a given string.
 
+    Args:
+        line (str): The input for infer operation.
+
+    Returns:
+        Union[str, float, float]: Predicted utilities, confidence score, and infer latency in millisecond.
+    """
     question = "Used Utilities"
     prompt = f"{line}, {question}:"
 

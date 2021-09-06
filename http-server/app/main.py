@@ -25,6 +25,14 @@ async def root():
 
 @app.post("/api/predict")
 async def predict(item: ModelParam):
+    """Accepts a JSON-formatted payload which contains text as infer input.
+
+    Args:
+        item (ModelParam): Payload which contains the infer input in `line` key.
+
+    Returns:
+        JSON: JSON-formatted response contains the predicted utilities, score, and the infer latency in millisecond.
+    """
     utilities = []
     score = 0.0
     elapsed_ms = 0
