@@ -14,7 +14,6 @@ filebeat.inputs:
   enabled: true
   paths:
     - /home/cowrie/cowrie/var/log/cowrie/cowrie.json*
-    - /home/cowrie/cowrie/var/log/cowrie/cowrie.json.2021-08-25
 
 setup.template.settings:
   index.number_of_shards: 1
@@ -35,4 +34,4 @@ processors:
 
 # Registry data path. If a relative path is used, it is considered relative to the
 # data path.
-#filebeat.registry.path: ${path.data}/registry
+filebeat.registry.path: /home/ubuntu/filebeat-registry
