@@ -1,3 +1,5 @@
+# reference: https://github.com/GokuMohandas/MLOps/blob/7cd004d/config/gunicorn.py
+
 # config/gunicorn.py
 # Gunicorn config file
 import os
