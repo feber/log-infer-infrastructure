@@ -34,7 +34,8 @@ data = list(msgs["message"])
 # add extra special tokens
 tokenizer = GPT2Tokenizer.from_pretrained(model_name,
                                           eos_token='<|endoftext|>', 
-                                          pad_token='<|pad|>')
+                                          pad_token='<|pad|>',
+                                          add_prefix_space=True )
 
 # +1 in any case 
 max_length = max([len(tokenizer.encode(row)) for row in data])
