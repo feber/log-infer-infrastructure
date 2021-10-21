@@ -20,20 +20,7 @@ tokenizer = GPT2Tokenizer.from_pretrained("/root/model_save")
 
 model = model.to(device)
 
-questions_list = [
-                  "Αριθμός Ταυτότητας", 
-                  "Ημερονηνία Έκδοσης", 
-                  "Όνομα", 
-                  "Given Name", 
-                  "Επώνυμο", 
-                  "Surname",
-                  "Πατρώνυμο",
-                  "Μητέρας Όνομα",
-                  "Επίθετο Μητέρας",
-                  "Ημερονηνία Γέννησης",
-                  "Καταγωγή", 
-                  "Δημότης"
-]
+questions_list = ["Used Utilities"]
 
 def gpt2(text, ques):
     prompt = f"{text}, {ques}:\n"
@@ -98,14 +85,12 @@ title = "GPT-2"
 description = "demo for OpenAI GPT-2. To use it, simply add your text, or click one of the examples to load them. Read more at the links below."
 article = "<p style='text-align: center'><a href='https://openai.com/blog/better-language-models/'>Better Language Models and Their Implications</a> | <a href='https://github.com/openai/gpt-2'>Github Repo</a></p>"
 examples = [
-            ["Y5015362 03/08/2018 Τρυφωνία Truphonia Καρκανάκη Karkanake Θέμης Φιλαρέτη Ζαχαρίου 16/07/1954 Λασσίθι Άρτα Κόρινθος 34927/4"],
-            ["PO4803172 29/12/2007 Βαλέριος Balerios Θεολόγος Theologos Αχιλλέας Παντούλα Παυλή 13/08/1980 Χίος Πολύγυρος Κόρινθος 82397/5"],
-            ["P7752142 21/03/2007 Δράκων Drakon Θεοδωρικάκος Theodorikakos Αριστοφάνης Ροδόκλεια Τζιόβα 15/02/1923 Θεσπρωτία Καρπενήσι Λιβαδιά 96933/9"],
-            ["I6641241 06/03/2016 Μαρκέλλα Markella Κωτσιονοπούλου Kotsionopoulou Ιάσονας Κλαίρη Κοντού 10/07/1972 Πέλλα Χίος Ηγουμενίτσα 57776/4"],
-            ["TH3925465 31/08/2019 Γραμματική Grammatike Κάκκα Kakka Λεμονής Μιχαέλα Ταφραλή 29/04/1935 Αργολίδα Έδεσσα Λάρισα 31165/2"],
-            ["AM2456789 02/08/2018 Έριον Erion Τσάνι Tsani Μπέντρι Ζελιχά Ζετά 03/02/1995 Λούσνιε Αλβανίας Λεβαδέων 27097/1"],
-            ["XY5338112 01/08/2015 Στεργιανή Stergiane Καρακώστα Karakosta Μάριος Ρωξάνη Καλαμάρα 12/02/1974 Λέσβος Ναύπλιο Λιβαδιά 41874/6"],
-            ["XE5338112 06/07/2016 Ευθύμιος Efthymios Τσέργας Tsergas Κωσταντίνος Πηνελόπη Κάσσου 26/07/1987 Αθήνα Αττικής Δημητρίου 15257/6"]
+            ["cd /tmp"],
+            [" echo  qazwsx123 nk8Y98qRrIJn4 nk8Y98qRrIJn4 n |passwd"],
+            ["lscpu | grep Model"],
+            ["cat /var/tmp/.var03522123 | head -n 1"],
+            ["echo -e p@ssw0rd123\nIr1M520wkMx6\nIr1M520wkMx6|passwd|bash"],
+            ["uname -m"]
 ]
 
 gr.Interface(gpt2, inputs, outputs, title=title, description=description, article=article, examples=examples).launch(share=True)

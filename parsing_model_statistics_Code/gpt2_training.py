@@ -22,41 +22,19 @@ epsilon = 1e-8
 sample_every = 100          # this produces sample output every 100 steps
 
 """1. Get the Data"""
+
 # read from csv file 
-greek_ids = pd.read_csv('training_greek_ids.csv')
+msgs = pd.read_csv('trainingdata.csv' , header=None , names=['message'])
 
-"""# 2. Format Data """
-
-def format_data(df):
-    # Drop columns with no information
-    df = df.drop(['Unnamed: 0', 'Ύψος', 'Αρχή Έκδοσης Δελτίου'], axis=1)
-    
-    # remove Y.A. no real use
-    #df['Αρχή Έκδοσης Δελτίου'] = df['Αρχή Έκδοσης Δελτίου'].str[5:]
-    
-    # convert it dictionary for easier 
-    dictQA = df.to_dict(orient = 'records')
-
-    # Proper Format of Data for Q.A. task
-    # load all dataset to list object 
-    data = []
-    
-    for index in dictQA:
-        for k, v in index.items():
-            line = ' '.join(index.values()) + ", "+ k+  ":\n"+ v+ "<|endoftext|>"
-            data.append(line)
-
-    return data
-    
-    
-data = format_data(greek_ids)
+# trasform to python list
+data = list(msgs["message"])
 
 """3. Tokenization"""
 
 # add extra special tokens
 tokenizer = GPT2Tokenizer.from_pretrained(model_name,
                                           eos_token='<|endoftext|>', 
-                                          pad_token='<|pad|>' )
+                                          pad_token='<|pad|>')
 
 # +1 in any case 
 max_length = max([len(tokenizer.encode(row)) for row in data])
@@ -306,6 +284,8 @@ df_stats = pd.DataFrame(data=training_stats)
 
 # Use the 'epoch' as the row index.
 df_stats = df_stats.set_index('epoch')
+
+#print(df_stats)
 
 # Model Info
 # Get all of the model's parameters as a list of tuples.

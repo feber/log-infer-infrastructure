@@ -23,35 +23,27 @@ tokenizer = GPT2Tokenizer.from_pretrained("/root/model_save")
 model = model.to(device)
 
 """ 1. Get the Data"""
-# read from csv file 
-test_greek_ids = pd.read_csv('test_greek_ids.csv')
+
+# read from csv file
+test_data = pd.read_csv('testingdata1.csv')
 
 """ 2. Format Data """
 def format_data(df):
-    # Drop columns with no information
-    df = df.drop(['Unnamed: 0', 'Ύψος'], axis=1)
-    
-    # remove Y.A. no real use
-    df['Αρχή Έκδοσης Δελτίου'] = df['Αρχή Έκδοσης Δελτίου'].str[5:]
-    
-    # convert it dictionary for easier 
-    dictQA = df.to_dict(orient = 'records')
-
-    # Proper Format of Data for Q.A. task
-    # load all dataset to list object 
+    # convert to list object
+    ls = list(test_data['message'])
+    # split data to X_test and y_test
     X = []
     y = []
-    
-    for index in dictQA:
-        for k, v in index.items():
-            line = ' '.join(index.values()) + ", "+ k+  ":\n"
-            
-            y.append(v)
-            X.append(line)
+    for item in ls:
+        f, s = item.split(';')
+
+        s = s.replace('<|endoftext|>', '')
+        y.append(s)
+        X.append(f)
 
     return X, y
 
-X_test, y_test = format_data(test_greek_ids)
+X_test, y_test = format_data(test_data)
 
 print("X test length: ", len(X_test))
 print("y test length: ", len(y_test))
