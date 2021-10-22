@@ -29,8 +29,8 @@ msgs = pd.read_csv('trainingdata.csv' , header=None , names=['message'])
 # trasform to python list
 data = list(msgs["message"])
 
-"""3. Tokenization"""
 
+"""3. Tokenization"""
 # add extra special tokens
 tokenizer = GPT2Tokenizer.from_pretrained(model_name,
                                           eos_token='<|endoftext|>', 
