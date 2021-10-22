@@ -90,7 +90,8 @@ examples = [
             ["lscpu | grep Model"],
             ["cat /var/tmp/.var03522123 | head -n 1"],
             ["echo -e p@ssw0rd123\nIr1M520wkMx6\nIr1M520wkMx6|passwd|bash"],
-            ["uname -m"]
+            ["uname -m"],
+            ["echo passwd"]
 ]
 
 gr.Interface(gpt2, inputs, outputs, title=title, description=description, article=article, examples=examples).launch(share=True)
