@@ -9,7 +9,7 @@ from collections import Counter
 set_seed(42)
 
 model_name = 'gpt2'
-max_length = 242
+max_length = 300
 
 # if not available then run on cpu 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -27,6 +27,7 @@ model = model.to(device)
 # read from csv file
 test_data = pd.read_csv('testingdata1.csv')
 
+
 """ 2. Format Data """
 def format_data(df):
     # convert to list object
@@ -42,6 +43,7 @@ def format_data(df):
         X.append(f)
 
     return X, y
+
 
 X_test, y_test = format_data(test_data)
 
